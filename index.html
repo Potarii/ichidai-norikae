@@ -179,7 +179,7 @@
   .col-arr{flex:2;min-width:0;text-align:center}
   .col-arr2{flex:2;min-width:0;text-align:center;font-size:11px}
   .col-dur{width:40px;text-align:center;flex-shrink:0;font-size:11px}
-  .hour-row-header .col-dep,.hour-row-header .col-mid2,.hour-row-header .col-mid,.hour-row-header .col-arr,.hour-row-header .col-arr2,.hour-row-header .col-dur{font-size:9px;text-align:center;color:var(--sub)}
+  .hour-row-header .col-dep,.hour-row-header .col-mid2,.hour-row-header .col-mid,.hour-row-header .col-arr,.hour-row-header .col-arr2,.hour-row-header .col-dur{font-size:9px;text-align:center;color:#3a5a58;font-weight:700}
 
   /* 往路+土曜 */
   :root.sat-mode {
@@ -231,7 +231,7 @@
 
   <!-- 往路・帰路 -->
   <div class="direction-toggle">
-    <button id="btn-oi" class="active" onclick="toggleOiMode()">▶ 行き(3丁目バス→市大)</button>
+    <button id="btn-oi" class="active" onclick="toggleOiMode()">▶ 行き(アトム毘沙門→市大)</button>
     <button id="btn-kaeri" onclick="setDirection('kaeri')">◀ 帰り(市大→3丁目)</button>
   </div>
 
@@ -379,45 +379,46 @@ const NUMATA_HOL = NUMATA_SAT;
 function getGwBus(){ return {weekday:GWBUS_WD,saturday:GWBUS_SAT,holiday:GWBUS_HOL}[dayType]; }
 function getNumataBus(){ return {weekday:NUMATA_WD,saturday:NUMATA_SAT,holiday:NUMATA_HOL}[dayType]; }
 
-// 帰路: 市立大学前発→大塚着 [発,着]ペア（PDFより 50便）
+// 帰路: 市立大学前発→大塚着 [発,着,終着バッジ]（PDFより）
+// 終着: こ=こころ系, 花=花の季台, 市=市立大学前止まり
 const GWBUS_KAERI_WD = [
-  ['8:03','8:07'],['8:08','8:12'],['8:13','8:17'],['8:18','8:22'],['8:23','8:27'],
-  ['8:28','8:32'],['8:33','8:37'],['8:38','8:42'],['8:43','8:47'],['8:48','8:52'],
-  ['8:53','8:57'],['8:58','9:02'],
-  ['9:03','9:07'],['9:13','9:17'],['9:23','9:27'],['9:33','9:37'],['9:43','9:47'],['9:53','9:57'],
-  ['10:03','10:07'],['10:08','10:12'],['10:13','10:17'],['10:18','10:22'],
-  ['10:23','10:27'],['10:28','10:32'],['10:33','10:37'],['10:43','10:47'],
-  ['11:03','11:07'],['11:23','11:27'],['11:43','11:47'],
-  ['12:03','12:07'],['12:23','12:27'],['12:33','12:37'],['12:43','12:47'],['12:53','12:57'],
-  ['13:03','13:07'],['13:23','13:27'],['13:43','13:47'],
-  ['14:03','14:07'],['14:13','14:17'],['14:23','14:27'],['14:33','14:37'],['14:43','14:47'],
-  ['15:03','15:07'],['15:23','15:27'],['15:43','15:47'],['15:53','15:57'],
-  ['16:03','16:07'],['16:13','16:17'],['16:23','16:27'],
-  ['18:13','18:17'],
+  ['8:03','8:07','こ'],['8:08','8:12','花'],['8:13','8:17','こ'],['8:18','8:22','こ'],['8:23','8:27','花'],
+  ['8:28','8:32','こ'],['8:33','8:37','こ'],['8:38','8:42','花'],['8:43','8:47','こ'],['8:48','8:52','こ'],
+  ['8:53','8:57','花'],['8:58','9:02','こ'],
+  ['9:03','9:07','こ'],['9:13','9:17','花'],['9:23','9:27','こ'],['9:33','9:37','こ'],['9:43','9:47','花'],['9:53','9:57','こ'],
+  ['10:03','10:07','こ'],['10:08','10:12','花'],['10:13','10:17','こ'],['10:18','10:22','花'],
+  ['10:23','10:27','こ'],['10:28','10:32','花'],['10:33','10:37','こ'],['10:43','10:47','花'],
+  ['11:03','11:07','こ'],['11:23','11:27','花'],['11:43','11:47','こ'],
+  ['12:03','12:07','こ'],['12:23','12:27','花'],['12:33','12:37','こ'],['12:43','12:47','花'],['12:53','12:57','こ'],
+  ['13:03','13:07','こ'],['13:23','13:27','花'],['13:43','13:47','こ'],
+  ['14:03','14:07','こ'],['14:13','14:17','花'],['14:23','14:27','こ'],['14:33','14:37','花'],['14:43','14:47','こ'],
+  ['15:03','15:07','こ'],['15:23','15:27','花'],['15:43','15:47','こ'],['15:53','15:57','花'],
+  ['16:03','16:07','こ'],['16:13','16:17','花'],['16:23','16:27','こ'],
+  ['18:13','18:17','こ'],
 ];
 // 帰路: 沼田料金所前発→大塚着 [発,着]ペア（PDFより 94便）
 const NUMATA_KAERI_WD = [
-  ['6:46','6:48'],['7:01','7:03'],['7:16','7:18'],['7:31','7:33'],['7:36','7:38'],
-  ['7:41','7:43'],['7:46','7:48'],['7:51','7:53'],['7:56','7:58'],
-  ['10:51','10:53'],['11:11','11:13'],['11:31','11:33'],['11:51','11:53'],['12:11','12:13'],
-  ['13:11','13:13'],['13:31','13:33'],['13:51','13:53'],['14:51','14:53'],
-  ['15:11','15:13'],['15:31','15:33'],
-  ['16:31','16:33'],['16:36','16:38'],['16:41','16:43'],['16:46','16:48'],['16:51','16:53'],
-  ['16:56','16:58'],['17:01','17:03'],['17:06','17:08'],['17:11','17:13'],['17:16','17:18'],
-  ['17:21','17:23'],['17:24','17:26'],['17:26','17:28'],['17:31','17:33'],['17:39','17:41'],
-  ['17:41','17:43'],['17:44','17:46'],['17:46','17:48'],['17:53','17:55'],
-  ['18:01','18:03'],['18:06','18:08'],['18:09','18:11'],['18:14','18:16'],['18:16','18:18'],
-  ['18:21','18:23'],['18:23','18:25'],['18:31','18:33'],['18:34','18:36'],['18:36','18:38'],
-  ['18:41','18:43'],['18:51','18:53'],['18:54','18:56'],['18:56','18:58'],
-  ['19:01','19:03'],['19:09','19:11'],['19:11','19:13'],['19:16','19:18'],['19:21','19:23'],
-  ['19:23','19:25'],['19:26','19:28'],['19:31','19:33'],['19:34','19:36'],['19:36','19:38'],
-  ['19:41','19:43'],['19:44','19:46'],['19:51','19:53'],['19:59','20:01'],['20:01','20:03'],
-  ['20:06','20:08'],['20:09','20:11'],['20:16','20:18'],['20:24','20:26'],['20:26','20:28'],
-  ['20:31','20:33'],['20:39','20:41'],['20:41','20:43'],['20:46','20:48'],['20:56','20:58'],
-  ['20:59','21:01'],['21:03','21:05'],['21:16','21:18'],['21:23','21:25'],['21:31','21:33'],
-  ['21:41','21:43'],['21:51','21:53'],['22:01','22:03'],['22:11','22:13'],['22:21','22:23'],
-  ['22:31','22:33'],['22:41','22:43'],['22:51','22:53'],
-  ['23:01','23:03'],['23:11','23:13'],['23:21','23:23'],
+  ['6:46','6:48','こ'],['7:01','7:03','こ'],['7:16','7:18','こ'],['7:31','7:33','こ'],['7:36','7:38','こ'],
+  ['7:41','7:43','こ'],['7:46','7:48','こ'],['7:51','7:53','こ'],['7:56','7:58','こ'],
+  ['10:51','10:53','こ'],['11:11','11:13','花'],['11:31','11:33','こ'],['11:51','11:53','花'],['12:11','12:13','こ'],
+  ['13:11','13:13','花'],['13:31','13:33','こ'],['13:51','13:53','花'],['14:51','14:53','こ'],
+  ['15:11','15:13','花'],['15:31','15:33','こ'],
+  ['16:31','16:33','こ'],['16:36','16:38','花'],['16:41','16:43','こ'],['16:46','16:48','花'],['16:51','16:53','こ'],
+  ['16:56','16:58','花'],['17:01','17:03','こ'],['17:06','17:08','花'],['17:11','17:13','こ'],['17:16','17:18','花'],
+  ['17:21','17:23','こ'],['17:24','17:26','花'],['17:26','17:28','こ'],['17:31','17:33','花'],['17:39','17:41','こ'],
+  ['17:41','17:43','花'],['17:44','17:46','こ'],['17:46','17:48','花'],['17:53','17:55','こ'],
+  ['18:01','18:03','花'],['18:06','18:08','こ'],['18:09','18:11','花'],['18:14','18:16','こ'],['18:16','18:18','花'],
+  ['18:21','18:23','こ'],['18:23','18:25','花'],['18:31','18:33','こ'],['18:34','18:36','花'],['18:36','18:38','こ'],
+  ['18:41','18:43','花'],['18:51','18:53','こ'],['18:54','18:56','花'],['18:56','18:58','こ'],
+  ['19:01','19:03','花'],['19:09','19:11','こ'],['19:11','19:13','花'],['19:16','19:18','こ'],['19:21','19:23','花'],
+  ['19:23','19:25','こ'],['19:26','19:28','花'],['19:31','19:33','こ'],['19:34','19:36','花'],['19:36','19:38','こ'],
+  ['19:41','19:43','花'],['19:44','19:46','こ'],['19:51','19:53','花'],['19:59','20:01','こ'],['20:01','20:03','花'],
+  ['20:06','20:08','こ'],['20:09','20:11','花'],['20:16','20:18','こ'],['20:24','20:26','花'],['20:26','20:28','こ'],
+  ['20:31','20:33','花'],['20:39','20:41','こ'],['20:41','20:43','花'],['20:46','20:48','こ'],['20:56','20:58','花'],
+  ['20:59','21:01','こ'],['21:03','21:05','花'],['21:16','21:18','こ'],['21:23','21:25','花'],['21:31','21:33','こ'],
+  ['21:41','21:43','花'],['21:51','21:53','こ'],['22:01','22:03','花'],['22:11','22:13','こ'],['22:21','22:23','花'],
+  ['22:31','22:33','こ'],['22:41','22:43','花'],['22:51','22:53','こ'],
+  ['23:01','23:03','花'],['23:11','23:13','こ'],['23:21','23:23','花'],
 ]
 function getGwBusKaeri(){ return GWBUS_KAERI_WD; }
 function getNumataBusKaeri(){ return NUMATA_KAERI_WD; }
@@ -537,7 +538,7 @@ function getAstramKaeriArr(depMin){
 
 
 // ==================== 状態 ====================
-let direction='oi', dayType='weekday', depArr='dep';
+let direction='oi_astram', dayType='weekday', depArr='dep';
 
 function setDayType(d){
   dayType=d;
@@ -746,12 +747,12 @@ function calcKaeri(inputMin,byArr=false){
     const d = gwPairs.find(([dep])=>toMin(dep)>=depMin);
     const n = numPairs.find(([dep])=>toMin(dep)>=depMin);
     if(!d&&!n) return null;
-    if(!n) return {dep:toMin(d[0]),arr:toMin(d[1]),via:'direct'};
-    if(!d) return {dep:toMin(n[0]),arr:toMin(n[1])+2,via:'numata'};
+    if(!n) return {dep:toMin(d[0]),arr:toMin(d[1]),via:'direct',destBadge:d[2]||''};
+    if(!d) return {dep:toMin(n[0]),arr:toMin(n[1])+2,via:'numata',destBadge:n[2]||''};
     // 直通が30分以内なら優先
     return (toMin(d[0])-depMin<=30)
-      ? {dep:toMin(d[0]),arr:toMin(d[1]),via:'direct'}
-      : {dep:toMin(n[0]),arr:toMin(n[1])+2,via:'numata'};
+      ? {dep:toMin(d[0]),arr:toMin(d[1]),via:'direct',destBadge:d[2]||''}
+      : {dep:toMin(n[0]),arr:toMin(n[1])+2,via:'numata',destBadge:n[2]||''};
   }
 
   if(!byArr){
@@ -763,7 +764,7 @@ function calcKaeri(inputMin,byArr=false){
     const bEntry=bList.find(([t])=>toMin(t)===bMin);
     const bTen=bEntry?bEntry[1]:'';
     const bArr=bMin+6;
-    return makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen,gw.via==='numata');
+    return makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen,gw.via==='numata',gw.destBadge);
   } else {
     const bArr=inputMin;
     const bMin=findPrev(bTimes,bArr-6); if(!bMin)return null;
@@ -774,21 +775,21 @@ function calcKaeri(inputMin,byArr=false){
     const gwPrev=GWBUS_KAERI_WD.slice().reverse().find(([,arr])=>toMin(arr)<=aMin-3);
     const numPrev=NUMATA_KAERI_WD.slice().reverse().find(([,arr])=>toMin(arr)+2<=aMin-3);
     if(!gwPrev&&!numPrev) return null;
-    let gMin,gArr,useNumata;
+    let gMin,gArr,useNumata,destBadge='';
     if(gwPrev&&numPrev){
       useNumata=toMin(numPrev[0])>toMin(gwPrev[0]);
     } else { useNumata=!gwPrev; }
-    if(useNumata){ gMin=toMin(numPrev[0]); gArr=toMin(numPrev[1])+2; }
-    else { gMin=toMin(gwPrev[0]); gArr=toMin(gwPrev[1]); }
+    if(useNumata){ gMin=toMin(numPrev[0]); gArr=toMin(numPrev[1])+2; destBadge=numPrev[2]||''; }
+    else { gMin=toMin(gwPrev[0]); gArr=toMin(gwPrev[1]); destBadge=gwPrev[2]||''; }
     const bEntry2=bList.find(([t])=>toMin(t)===bMin);
     const bTen2=bEntry2?bEntry2[1]:'';
-    return makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen2,useNumata);
+    return makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen2,useNumata,destBadge);
   }
 }
-function makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen='',useNumata=false){
+function makeKaeriResult(gMin,gArr,aMin,aArr,bMin,bArr,bTen='',useNumata=false,destBadge=''){
   const tenLabel=bTen==='天'?'（毘沙門天経由）':'';
   return{
-    dep:fromMin(gMin),arr:fromMin(bArr),dur:bArr-gMin,isDirect:!useNumata,astramDep:fromMin(aMin),astramArr:fromMin(aArr),busArr:fromMin(bArr),busDep:fromMin(bMin),
+    dep:fromMin(gMin),arr:fromMin(bArr),dur:bArr-gMin,isDirect:!useNumata,busKind:useNumata?'沼':'直',destBadge,astramDep:fromMin(aMin),astramArr:fromMin(aArr),busArr:fromMin(bArr),busDep:fromMin(bMin),
     steps:[
       {type:'depart',station:useNumata?'沼田料金所前':'市立大学前',time:fromMin(gMin),isNumata:useNumata},
       {type:'transport',kind:'bus',
@@ -969,8 +970,8 @@ function renderHourList(routes, area){
   if(direction==='oi'){
     html+=`<div class="hour-row-header">
       <span class="col-dep">3丁目バス発</span>
-      <span class="col-mid2">アトム毘沙門発</span>
-      <span class="col-mid">アトム大塚着</span>
+      <span class="col-mid2">アト毘沙門発</span>
+      <span class="col-mid">大塚着</span>
       <span class="col-arr">バス大塚発</span>
       <span class="col-arr2">市大着</span>
       <span class="col-dur">所要</span>
@@ -986,9 +987,9 @@ function renderHourList(routes, area){
   } else if(direction==='kaeri'){
     html+=`<div class="hour-row-header">
       <span class="col-dep">市大発</span>
-      <span class="col-mid2">アトム大塚発</span>
-      <span class="col-mid">毘沙門着</span>
-      <span class="col-arr">中バス停発</span>
+      <span class="col-mid2">アト大塚発</span>
+      <span class="col-mid">アト毘沙門着</span>
+      <span class="col-arr">中バス発</span>
       <span class="col-dur">所要</span>
     </div>`;
   }
@@ -997,7 +998,9 @@ function renderHourList(routes, area){
     const isKaeri=direction==='kaeri';
     const isOi=direction==='oi';
     const isOiAstram=direction==='oi_astram';
-    html+=`<div class="hour-row${highlight?' hour-row-direct':''}" id="hrow-${i}" onclick="toggleDetail(${i})">
+    // 帰路はhour-row-directを使わず、バッジで直/沼を区別
+    const rowClass=isKaeri?'':highlight?' hour-row-direct':'';
+    html+=`<div class="hour-row${rowClass}" id="hrow-${i}" onclick="toggleDetail(${i})">
       ${isOi
         ? `<div class="dep-arr-kaeri">
             <span class="col-dep">${r.dep}${highlight?'<span class="direct-badge">直</span>':''}</span>
@@ -1010,18 +1013,17 @@ function renderHourList(routes, area){
         ? `<div class="dep-arr-kaeri">
             <span class="col-dep">${r.dep}${highlight?'<span class="direct-badge">直</span>':''}</span>
             <span class="col-mid2">${r.astramArr||''}</span>
-            <span class="col-mid">${r.busDep||''}</span>
+            <span class="col-mid" style="font-weight:900;color:var(--text)">${r.busDep||''}</span>
             <span class="col-arr2">${r.arr||''}</span>
            </div>`
         : `<div class="dep-arr-kaeri">
-            <span class="col-dep">${r.dep}${highlight?'<span class="direct-badge">直</span>':''}</span>
+            <span class="col-dep">${r.destBadge?`<span class="direct-badge" style="background:#5a7a78;margin-right:2px">${r.destBadge}</span>`:''}${r.busKind==='直'?'<span class="direct-badge" style="background:var(--direct-badge,var(--hour-direct-border))">直</span>':''}${r.dep}</span>
             <span class="col-mid2">${r.astramDep||''}</span>
-            <span class="col-mid">${r.astramArr||''}</span>
-            <span class="col-arr">${r.busDep||''}</span>
+            <span class="col-mid" style="font-weight:900;color:var(--text)">${r.astramArr||''}</span>
+            <span class="col-arr" style="font-weight:400">${r.busDep||''}</span>
            </div>`
       }
       <div class="dur-badge" style="font-size:10px;white-space:nowrap">${r.dur}分</div>
-      <div style="font-size:11px;color:var(--sub);margin-left:2px" id="hchev-${i}">▼</div>
     </div>
     <div class="hour-detail" id="hdet-${i}" style="display:none">${renderRoute(r,true)}</div>`;
   });
@@ -1038,7 +1040,7 @@ function toggleDetail(i){
   const isOpen=det.style.display!=='none';
   det.style.display=isOpen?'none':'block';
   row.classList.toggle('expanded',!isOpen);
-  chev.textContent=isOpen?'▼':'▲';
+  if(chev) chev.textContent=isOpen?'▼':'▲';
 }
 
 function switchTab(tab){
@@ -1135,8 +1137,8 @@ window.onload=()=>{
   else dayType='weekday';
   ['weekday','saturday','holiday'].forEach(k=>document.getElementById('btn-'+k).classList.toggle('active',k===dayType));
 
-  // ⑤ 午前は往路・午後は帰路
-  if(h<12) setDirection('oi');
+  // ⑤ 午前は往路（アトム）・午後は帰路
+  if(h<12) setDirection('oi_astram');
   else setDirection('kaeri');
 
   // ⑥ 自動検索（DOM更新が落ち着いてから）
